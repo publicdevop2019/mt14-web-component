@@ -1,0 +1,24 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import './scss/theme.scss';
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-radio-outer-circle {
+    border-width: 0px !important;
+    height: 24px !important;
+    width: 24px !important;
+}
+.mat-radio-inner-circle {
+    height: 24px !important;
+    width: 24px !important;
+}
+.mat-radio-container {
+    height: 24px !important;
+    width: 24px !important;
+}
+.app-divider{
+    height: 8px; 
+    width: 100%;
+    background-color: #ffffff;
+}
