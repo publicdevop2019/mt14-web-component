@@ -1,11 +1,11 @@
 {
   "name": "mt-wc-product",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build-local": "ng build",
-    "build": "ng build --configuration=production && rm -r ../../server/public/product/* && cp -a ./dist/. ../../server/public/product/ && cp package.json ./dist/",
+    "build": "ng build --configuration=production && cat dist/runtime-es2015.js dist/polyfills-es2015.js dist/scripts.js dist/main-es2015.js > dist/mt-product.js && rm -r ../../server/public/product/* && cp -a ./dist/. ../../server/public/product/ && cp package.json ./dist/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

@@ -30,9 +30,11 @@ import { SoldOutBannerComponent } from './components/sold-out-banner/sold-out-ba
 })
 export class AppModule implements DoBootstrap {
   constructor(private injector: Injector) {
+    console.dir('ngDoBootstrap')
+    const el = createCustomElement(ProductBasicComponent, { injector: this.injector });
+    if (!customElements.get('mt-wc-product'))
+      customElements.define('mt-wc-product', el);
   }
   ngDoBootstrap(appRef: ApplicationRef): void {
-    const el = createCustomElement(ProductBasicComponent, { injector: this.injector });
-    customElements.define('mt-wc-product', el);
   }
 }
