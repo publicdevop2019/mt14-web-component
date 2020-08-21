@@ -9,7 +9,7 @@ import { take } from 'rxjs/operators';
 })
 export class LazyImageComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() lazySrc: string;
-  @Input() view: 'card' | 'detail' | 'icon' = 'icon';
+  @Input() imgSize: number;
   @ViewChild("imgRef", { static: true }) imgRef: ElementRef;
   private _visibilityConfig = {
     threshold: 0

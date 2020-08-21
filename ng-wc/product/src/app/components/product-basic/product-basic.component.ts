@@ -63,6 +63,7 @@ function notNullAndUndefinedAndEmptyString(input: any): boolean {
 export class ProductBasicComponent implements OnInit, OnDestroy,OnChanges {
     @Input() locale: 'enUS' | 'zhHans' = 'enUS';
     @Input() productDetail: IProductDetail;
+    @Input() imgSize: number;
     @Output() valueChanged: EventEmitter<ICartItem> = new EventEmitter();
     public i18nLable = CONSTANT_I18N;
     public imageUrlPrefix: string = environment.imageUrl + '/'

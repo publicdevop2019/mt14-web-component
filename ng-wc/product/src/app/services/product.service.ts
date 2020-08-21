@@ -10,6 +10,7 @@ export class ProductService {
     public formProductSalesAttr: FormGroup;
     public productDetails: IProductDetail;
     public finalPrice: number;
+    public imgSize: number;
     constructor() { }
     extractCartItem(): ICartItem {
         return {

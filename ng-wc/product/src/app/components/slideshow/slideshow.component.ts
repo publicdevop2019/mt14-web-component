@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class SlideshowComponent implements OnInit {
   @Input() imageUrls: string[];
+  @Input() imageSize: number;
   constructor() { }
 
   ngOnInit(): void {

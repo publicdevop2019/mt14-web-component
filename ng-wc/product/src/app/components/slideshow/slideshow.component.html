@@ -1,7 +1,7 @@
-<div #imgContainer style="height: 100vw;overflow-x: auto;white-space: nowrap;overflow-y: hidden;">
+<div #imgContainer style="overflow-x: auto;white-space: nowrap;overflow-y: hidden;"  [ngStyle]="{'height':imageSize}">
     <div *ngFor="let url of imageUrls;let i = index"
-        style="height: 100vw;width: 100vw; display: inline-block; position: relative;">
-        <app-lazy-image [lazySrc]="url" [view]="'detail'"></app-lazy-image>
+        style="display: inline-block; position: relative;" [ngStyle]="{'width':imageSize,'height':imageSize}">
+        <app-lazy-image [lazySrc]="url" [imgSize]="imageSize"></app-lazy-image>
         <div class="number-text">{{(i+1)+'/'+imageUrls.length}}</div>
     </div>
 </div>
