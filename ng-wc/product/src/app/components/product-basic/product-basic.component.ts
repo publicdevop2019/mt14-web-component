@@ -21,7 +21,7 @@ export interface IProductOption {
     priceVar?: string;
 }
 export interface IProductSku {
-    attributeSales: string[];
+    attributesSales: string[];
     price: number;
     storage: number;
 }
@@ -143,7 +143,7 @@ export class ProductBasicComponent implements OnInit, OnDestroy,OnChanges {
         let fg = this.productSvc.formProductSalesAttr;
         let salesAttr = Object.keys(fg.value).filter(e => (fg.get(e).value !== '' && fg.get(e).value !== null)).map(e => e + ':' + fg.get(e).value);
         let avaliableSku = this.productDetail.skus.filter(e => this.containsSelected(e, salesAttr));
-        let var1 = avaliableSku.map(e => e.attributeSales);
+        let var1 = avaliableSku.map(e => e.attributesSales);
         let flattedSku: string[] = [];
         var1.forEach(e => flattedSku.push(...e));
         let toBeAdded: string[] = []
@@ -196,13 +196,13 @@ export class ProductBasicComponent implements OnInit, OnDestroy,OnChanges {
 
     }
     containsSelected(e: IProductSku, salesAttr: string[]): boolean {
-        return salesAttr.filter(attr => e.attributeSales.includes(attr)).length === salesAttr.length
+        return salesAttr.filter(attr => e.attributesSales.includes(attr)).length === salesAttr.length
     }
     extracSalesInfo(skus: IProductSku[]) {
         let totalStorage = 0;
         skus.forEach(sku => {
             totalStorage = totalStorage + sku.storage;
-            sku.attributeSales.forEach(e => {
+            sku.attributesSales.forEach(e => {
                 let name = e.split(':')[0];
                 let value = e.split(':')[1];
                 let var2 = this.salesAttr.filter(e => e.name === name);
@@ -265,7 +265,7 @@ export class ProductBasicComponent implements OnInit, OnDestroy,OnChanges {
     }
     updateBasePrice(sales: any) {
         let salesAttr = Object.keys(sales).map(key => key + ":" + sales[key]).sort().join(',');
-        let out = this.productDetail.skus.filter(e => e.attributeSales.sort().join(',') === salesAttr)[0];
+        let out = this.productDetail.skus.filter(e => e.attributesSales.sort().join(',') === salesAttr)[0];
         if (out)
             this.basePrice = out.price
     }
