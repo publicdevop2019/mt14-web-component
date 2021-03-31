@@ -7,10 +7,9 @@
     5. copy scripts.js to target angular app assets folder, can update index.html to import it  
     6. copy styles.css to target angular app where web component is imported  
 ## Host build output in local server
+    0. cd ./ng-wc/product  
     0. npm run build  
-    1. change to server folder and run --> npm start  
-    2. content is hosted at http://localhost:4040/{component-name} e.g http://localhost:4040/product  
-
+    1. open html file located at demo folder
 ## Current issue with writing web component with angular
 1. when embedded angular in angular app, scripts.js needs to be put in index.html, will not work if import from @node_module
 2. wc in React app, property value is not getting set (a.k.a @Input() for complex object, simple string is fine

@@ -60,7 +60,7 @@ function notNullAndUndefinedAndEmptyString(input: any): boolean {
     templateUrl: './product-basic.component.html',
     styleUrls: ['./product-basic.component.scss']
 })
-export class ProductBasicComponent implements OnInit, OnDestroy,OnChanges {
+export class ProductBasicComponent implements OnInit, OnDestroy, OnChanges {
     @Input() locale: 'enUS' | 'zhHans' = 'enUS';
     @Input() productDetail: IProductDetail;
     @Input() imgSize: number;
@@ -72,7 +72,7 @@ export class ProductBasicComponent implements OnInit, OnDestroy,OnChanges {
     public imageUrls: string[]
     public soldOut = false;
     public soldOutDismiss = false;
-    constructor(public productSvc: ProductService) { 
+    constructor(public productSvc: ProductService) {
 
     }
     ngOnChanges(changes: SimpleChanges): void {
@@ -103,20 +103,16 @@ export class ProductBasicComponent implements OnInit, OnDestroy,OnChanges {
         this.productSvc.formProductOption.valueChanges.subscribe(next => {
             this.productSvc.finalPrice = this.calcTotal();
         });
-        if (this.productDetail.skus && this.productDetail.skus.length != 0) {
-            this.extracSalesInfo(this.productDetail.skus);
-            this.productSvc.formProductSalesAttr.valueChanges.subscribe(next => {
-                if (Object.keys(next).filter(e => next[e] === '').length === 0) {
-                    this.updateBasePrice(next);
-                    this.productSvc.finalPrice = this.calcTotal();
-                }
-            });
-            this.dynamicUpdateAttrCtrlStatus();
-        } else {
-            if (this.productDetail.storage === 0) {
-                this.soldOut = true;
+        
+        this.extracSalesInfo(this.productDetail.skus);
+        this.productSvc.formProductSalesAttr.valueChanges.subscribe(next => {
+            if (Object.keys(next).filter(e => next[e] === '').length === 0) {
+                this.updateBasePrice(next);
+                this.productSvc.finalPrice = this.calcTotal();
             }
-        }
+        });
+        this.dynamicUpdateAttrCtrlStatus();
+
         this.basePrice = +this.productDetail.lowestPrice;
         this.productSvc.formProductOption.valueChanges.subscribe(next => {
             this.valueChanged.emit(this.productSvc.extractCartItem());
@@ -142,7 +138,7 @@ export class ProductBasicComponent implements OnInit, OnDestroy,OnChanges {
     updateAttrCtrl(ctrlName: string, next: string) {
         let fg = this.productSvc.formProductSalesAttr;
         let salesAttr = Object.keys(fg.value).filter(e => (fg.get(e).value !== '' && fg.get(e).value !== null)).map(e => e + ':' + fg.get(e).value);
-        let avaliableSku = this.productDetail.skus.filter(e => this.containsSelected(e, salesAttr));
+        let avaliableSku = this.productDetail.skus.filter(e => !(e.attributesSales.length === 1 && e.attributesSales[0] === '')).filter(e => this.containsSelected(e, salesAttr));
         let var1 = avaliableSku.map(e => e.attributesSales);
         let flattedSku: string[] = [];
         var1.forEach(e => flattedSku.push(...e));
@@ -293,5 +289,8 @@ export class ProductBasicComponent implements OnInit, OnDestroy,OnChanges {
         let out = this.productDetail.attributeSaleImages.find(e => e.attributeSales === (ctrl + ":" + value));
         if (out)
             this.imageUrls = out.imageUrls
+    }
+    filterEmpty(sales: ISaleAttrUI[]) {
+        return sales.filter(e => e.name)
     }
 }
