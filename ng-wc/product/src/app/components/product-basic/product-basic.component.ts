@@ -137,8 +137,8 @@ export class ProductBasicComponent implements OnInit, OnDestroy, OnChanges {
     private previousCtrlValue: string = '';
     updateAttrCtrl(ctrlName: string, next: string) {
         let fg = this.productSvc.formProductSalesAttr;
-        let salesAttr = Object.keys(fg.value).filter(e => (fg.get(e).value !== '' && fg.get(e).value !== null)).map(e => e + ':' + fg.get(e).value);
-        let avaliableSku = this.productDetail.skus.filter(e => !(e.attributesSales.length === 1 && e.attributesSales[0] === '')).filter(e => this.containsSelected(e, salesAttr));
+        let salesAttrNext = Object.keys(fg.value).filter(e => (fg.get(e).value !== '' && fg.get(e).value !== null)).map(e => e + ':' + fg.get(e).value);
+        let avaliableSku = this.productDetail.skus.filter(e => !(e.attributesSales.length === 1 && e.attributesSales[0] === '')).filter(e => this.containsSelected(e, salesAttrNext));
         let var1 = avaliableSku.map(e => e.attributesSales);
         let flattedSku: string[] = [];
         var1.forEach(e => flattedSku.push(...e));
@@ -177,13 +177,13 @@ export class ProductBasicComponent implements OnInit, OnDestroy, OnChanges {
         this.previousCtrlValue = next;
         this.previousCtrl = ctrlName;
         this.previousAdded = toBeAdded;
-        if (salesAttr.length === 1 && salesAttr.filter(e => e.includes(ctrlName)).length === 0) {
-            this.currentDisableList = this.currentDisableList.filter(e => !e.includes(salesAttr[0].split(":")[0]));
+        if (salesAttrNext.length === 1 && salesAttrNext.filter(e => e.includes(ctrlName)).length === 0) {
+            this.currentDisableList = this.currentDisableList.filter(e => !e.includes(salesAttrNext[0].split(":")[0]));
             this.previousCtrlValue = '';
             this.previousCtrl = '';
             this.previousAdded = [];
         }
-        if (salesAttr.length === 0) {
+        if (salesAttrNext.length === 0) {
             this.currentDisableList = [];
             this.previousCtrlValue = '';
             this.previousCtrl = '';
@@ -191,31 +191,33 @@ export class ProductBasicComponent implements OnInit, OnDestroy, OnChanges {
         }
 
     }
-    containsSelected(e: IProductSku, salesAttr: string[]): boolean {
-        return salesAttr.filter(attr => e.attributesSales.includes(attr)).length === salesAttr.length
+    containsSelected(e: IProductSku, salesAttrSelected: string[]): boolean {
+        return salesAttrSelected.filter(attr => e.attributesSales.includes(attr)).length === salesAttrSelected.length
     }
     extracSalesInfo(skus: IProductSku[]) {
         let totalStorage = 0;
         skus.forEach(sku => {
             totalStorage = totalStorage + sku.storage;
-            sku.attributesSales.forEach(e => {
-                let name = e.split(':')[0];
-                let value = e.split(':')[1];
-                let var2 = this.salesAttr.filter(e => e.name === name);
-                if (var2.length > 0) {
-                    if (var2[0].value.includes(value)) {
-                        // do nothing for same value
+            if(!(sku.attributesSales.length === 1 && sku.attributesSales[0] === '')){
+                sku.attributesSales.forEach(e => {
+                    let name = e.split(':')[0];
+                    let value = e.split(':')[1];
+                    let var2 = this.salesAttr.filter(e => e.name === name);
+                    if (var2.length > 0) {
+                        if (var2[0].value.includes(value)) {
+                            // do nothing for same value
+                        } else {
+                            var2[0].value.push(value);
+                        }
                     } else {
-                        var2[0].value.push(value);
+                        let var1 = <ISaleAttrUI>{
+                            name: name,
+                            value: [value]
+                        }
+                        this.salesAttr.push(var1)
                     }
-                } else {
-                    let var1 = <ISaleAttrUI>{
-                        name: name,
-                        value: [value]
-                    }
-                    this.salesAttr.push(var1)
-                }
-            })
+                })
+            }
         });
         const salesCtrls: any = {};
         if (this.salesAttr.length > 0)
