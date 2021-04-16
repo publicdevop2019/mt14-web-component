@@ -21,13 +21,25 @@ export class ProductService {
             name: this.productDetails.name,
             attributesSales: this.getSalesAttr(),
             attrIdMap: this.productDetails.attrIdMap,
+            skuId: this.findSkuId(this.getSalesAttr()),
             id: ''
         } as ICartItem;
     }
-    getSalesAttr(): string[] {
+    getSalesAttr() {
         if (this.productDetails.skus && this.productDetails.skus.length !== 0) {
             let sales = this.formProductSalesAttr.value
             return Object.keys(sales).map(key => key + ":" + sales[key]).sort();
+        }
+    }
+    findSkuId(sales: string[]) {
+        if (sales.length === 0) {
+            return this.productDetails.skus[0].skuId;
+        } else {
+            const sorted = sales.sort();
+            return this.productDetails.skus.find(e => {
+                const sorted2 = e.attributesSales.sort();
+                return JSON.stringify(sorted2) === JSON.stringify(sorted)
+            }).skuId
         }
     }
     private _getSelectedOptions(): IProductOptions[] {

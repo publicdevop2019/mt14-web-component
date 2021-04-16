@@ -10,7 +10,7 @@ export interface IProductSimple {
     description: string;
     lowestPrice: number;
     totalSales: number;
-    id: number;
+    id: string;
 }
 export interface IProductOptions {
     title: string;
@@ -24,6 +24,7 @@ export interface IProductSku {
     attributesSales: string[];
     price: number;
     storage: number;
+    skuId:string;
 }
 export interface IProductDetail extends IProductSimple {
     imageUrlLarge?: string[];
@@ -45,7 +46,8 @@ export interface ICartItem {
     attributesSales: string[]
     attrIdMap: { [key: number]: string }
     imageUrlSmall: string;
-    productId: number;
+    productId: string;
+    skuId:string;
     name: string;
 }
 interface ISaleAttrUI {
